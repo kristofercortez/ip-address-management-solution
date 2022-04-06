@@ -5,3 +5,9 @@ controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
+
+# IP Address routes
+ip_address_index:
+    path: /
+    methods: [GET]
+    controller: App\Controller\IpAddressController::index
