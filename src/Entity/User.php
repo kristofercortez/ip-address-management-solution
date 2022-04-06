@@ -40,6 +40,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $last_name;
 
+    public function __construct()
+    {
+        $this->initGeneratedID();
+    }
+
     /**
      * @return string|null
      */
