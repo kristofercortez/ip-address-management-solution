@@ -2,14 +2,25 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Psr\Log\LoggerInterface;
 
-class IpAddressController extends AbstractController
+/**
+ * Class IpAddressController
+ * @package App\Controller
+ */
+class IpAddressController extends CrudController
 {
-    public function index(): Response
-    {
-        $parameters = [];
-        return $this->render('ip_address/index.html.twig', $parameters);
+    protected LoggerInterface $logger;
+
+    /**
+     * @param LoggerInterface $logger
+     */
+    public function __construct(
+        LoggerInterface $logger,
+    ) {
+        $this->pageTitle = 'IP Address';
+        $this->indexTwigFile = 'ip_address/index.html.twig';
+        $this->formTwigFile = 'ip_address/form.html.twig';
+        $this->logger = $logger;
     }
 }
