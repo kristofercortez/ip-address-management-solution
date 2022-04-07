@@ -12,7 +12,7 @@
                 </li>
             </ul>
             {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <span>Hi {{ app.user.getFirstName }}</span>
+                <span>Hi {{ app.user.getFirstName }} |</span>
             {% endif %}
             <ul class="navbar-nav my-2 my-lg-0">
                 <li class="nav-item">

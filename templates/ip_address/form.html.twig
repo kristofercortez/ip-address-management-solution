@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="col-12">
+        <div id="app">
+            <ip-address-form
+                object-id="{{ object_id|default(null) }}"
+                object-index-route="{{ path('ip_address_index') }}"
+            ></ip-address-form>
+        </div>
+    </div>
+{% endblock %}

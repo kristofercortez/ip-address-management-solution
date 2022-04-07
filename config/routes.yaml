@@ -11,3 +11,18 @@ ip_address_index:
     path: /ip-addresses
     methods: [GET]
     controller: App\Controller\IpAddressController::index
+
+ip_address_index_table_data:
+    path: /ip-addresses/list/{startPage}/{limit}
+    methods: [GET]
+    controller: App\Controller\IpAddressController::getIpAddressTableData
+
+ip_address_add_form:
+    path: /ip-addresses/add
+    methods: [ GET ]
+    controller: App\Controller\IpAddressController::add
+
+ip_address_edit_form:
+    path: /ip-addresses/{id}
+    methods: [ GET ]
+    controller: App\Controller\IpAddressController::edit
