@@ -4,8 +4,7 @@ namespace App\Repository;
 
 use App\Entity\IpAddress;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -43,6 +42,17 @@ class IpAddressRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    /**
+     * @return Query
+     */
+    public function getTableRawQuery()
+    {
+        $query = $this->createQueryBuilder('i');
+
+        // Return query
+        return $query->getQuery();
     }
 
     // /**

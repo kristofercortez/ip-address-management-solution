@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Exception\InvalidFormErrorException;
 use App\Response\IpAddressControllerResponse;
+use App\Service\IpAddress\GetIpAddressTableDataServiceInterface;
 use App\Service\IpAddress\SaveIpAddressServiceInterface;
 use App\Utility\GenerateResponse;
 use Exception;
@@ -19,26 +20,30 @@ class IpAddressController extends CrudController
 {
     protected LoggerInterface $logger;
     protected SaveIpAddressServiceInterface $saveIpAddressService;
+    protected GetIpAddressTableDataServiceInterface $getIpAddressTableDataService;
 
     /**
      * @param LoggerInterface $logger
      * @param SaveIpAddressServiceInterface $saveIpAddressService
+     * @param GetIpAddressTableDataServiceInterface $getIpAddressTableDataService
      */
     public function __construct(
         LoggerInterface $logger,
-        SaveIpAddressServiceInterface $saveIpAddressService
+        SaveIpAddressServiceInterface $saveIpAddressService,
+        GetIpAddressTableDataServiceInterface $getIpAddressTableDataService
     ) {
         $this->pageTitle = 'IP Address';
         $this->indexTwigFile = 'ip_address/index.html.twig';
         $this->formTwigFile = 'ip_address/form.html.twig';
         $this->logger = $logger;
         $this->saveIpAddressService = $saveIpAddressService;
+        $this->getIpAddressTableDataService = $getIpAddressTableDataService;
     }
 
     public function getIpAddressTableData(int $startPage, int $limit): Response
     {
         try {
-            $data = [];
+            $data = $this->getIpAddressTableDataService->execute($startPage, $limit);
             return GenerateResponse::json(
                 true,
                 $data,
@@ -63,9 +68,7 @@ class IpAddressController extends CrudController
         try {
             $data = json_decode($request->getContent());
             $this->validate($data, true);
-//            var_dump($data);
-//            die();
-            // save
+            // Save
             $this->saveIpAddressService->execute($data);
             return GenerateResponse::json(
                 true,
@@ -77,7 +80,6 @@ class IpAddressController extends CrudController
             return GenerateResponse::json(false, [], $exception->getMessage());
         } catch (Exception $exception) {
             $this->logger->error($exception->getMessage());
-            die($exception->getMessage());
             return GenerateResponse::json(
                 false,
                 [],
