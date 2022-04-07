@@ -26,6 +26,11 @@ class IpAddress
      */
     protected $label;
 
+    /**
+     * @ORM\OneToMany(targetEntity="IpAddressHistory", mappedBy="ip_address")
+     */
+    private $data_histories;
+
     public function __construct()
     {
         $this->initGeneratedID();
@@ -67,6 +72,14 @@ class IpAddress
     {
         $this->label = $label;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDataHistories()
+    {
+        return $this->data_histories;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Service\IpAddress;
 
 use App\Exception\IpAddressNotFoundException;
 use App\Repository\IpAddressRepository;
+use App\Utility\DatetimeUtility;
 
 /**
  * Class GetIpAddressFormDataService
@@ -33,11 +34,22 @@ class GetIpAddressFormDataService implements GetIpAddressFormDataServiceInterfac
             throw new IpAddressNotFoundException();
         }
 
+        // Get data histories
+        $histories = [];
+        foreach ($ipAddress->getDataHistories() as $history) {
+            $histories[] = [
+                'date' => $history->getDateCreate()->format(DatetimeUtility::FULL_DATE_AND_TIME),
+                'description' => $history->getDescription(),
+                'author' => $history->getUserCreate() ?
+                    $history->getUserCreate()->getFirstName() . ' ' . $history->getUserCreate()->getLastName() : []
+            ];
+        }
+
         return [
             'id' => $ipAddress->getId(),
             'ipAddress' => $ipAddress->getIpAddress(),
             'label' => $ipAddress->getLabel(),
-//            'acl' => $ipAddress->getAccess() ? $object->getAccess() : []
+            'histories' => $histories
         ];
     }
 }

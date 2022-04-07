@@ -51,6 +51,9 @@
                                         <b-spinner v-show="isSaving" class="align-middle mr-1" small></b-spinner>
                                         Save
                                     </b-button>
+                                    <b-button class="ml-2" variant="secondary" @click="showDataHistoryModal()" :disabled="isSaving" v-if="isEditing">
+                                        Show Data History
+                                    </b-button>
                                     <b-button class="ml-2" variant="danger" @click="goBack()" :disabled="isSaving">Back to List</b-button>
                                 </div>
                             </div>
@@ -59,6 +62,33 @@
                 </b-card>
             </b-card-group>
         </b-overlay>
+
+        <!-- Data History Modal -->
+        <b-modal
+            ref="refDataHistoryModal"
+            title="Data History"
+            class="modal-backdrop fade in"
+            hide-header-close
+            no-close-on-esc
+            no-close-on-backdrop
+            hide-backdrop
+            size="lg"
+        >
+            <div class="d-block">
+                <b-row>
+                    <b-col cols="12">
+                        <b-table striped hover :items="dataHistories"></b-table>
+                    </b-col>
+                </b-row>
+            </div>
+
+            <template #modal-footer>
+                <div class="w-100 clearfix">
+                    <b-button class="ml-2 float-end" variant="danger" @click="hideDataHistoryModal()">close</b-button>
+                </div>
+            </template>
+        </b-modal>
+
         <vue-confirm-dialog></vue-confirm-dialog>
     </div>
 </template>
@@ -87,6 +117,7 @@ export default {
         return {
             ipAddress: null,
             label: null,
+            dataHistories: [],
             isLoading: false,
             isSaving: false,
             headerText: 'Add a new IP Address',
@@ -186,6 +217,7 @@ export default {
                 if (responseData.success) {
                     this.ipAddress = response.data.data.ipAddress;
                     this.label = response.data.data.label;
+                    this.dataHistories = response.data.data.histories;
                     this.headerText = `IP Address information for ${this.ipAddress}`;
                     this.isLoading = false;
                     return;
@@ -196,7 +228,13 @@ export default {
                     window.location.replace(this.objectIndexRoute);
                 }, 3000);
             })
-        }
+        },
+        showDataHistoryModal() {
+            this.$refs.refDataHistoryModal.show();
+        },
+        hideDataHistoryModal() {
+            this.$refs['refDataHistoryModal'].hide();
+        },
     },
 };
 </script>
