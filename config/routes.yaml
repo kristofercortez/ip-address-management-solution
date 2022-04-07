@@ -6,6 +6,12 @@ kernel:
     resource: ../src/Kernel.php
     type: annotation
 
+# Temporary
+dashboard_index:
+    path: /
+    methods: [GET]
+    controller: App\Controller\IpAddressController::index
+
 # IP Address routes
 ip_address_index:
     path: /ip-addresses
