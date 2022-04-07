@@ -24,7 +24,7 @@
                                                 v-model="ipAddress"
                                                 :state="getValidationState(validationContext)"
                                                 aria-describedby="ip-address-input-feedback"
-                                                :readonly="isEditing"
+                                                :readonly="isEditing || isReadOnly"
                                             ></b-form-input>
                                             <b-form-invalid-feedback id="ip-address-input-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                                         </b-form-group>
@@ -38,6 +38,7 @@
                                                 v-model="label"
                                                 :state="getValidationState(validationContext)"
                                                 aria-describedby="label-input-feedback"
+                                                :readonly="isReadOnly"
                                             ></b-form-input>
                                             <b-form-invalid-feedback id="label-input-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                                         </b-form-group>
@@ -46,7 +47,10 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col-md-12 text-right">
-                                    <b-button class="ml-2" type="submit" variant="primary" :disabled="isSaving"><b-spinner v-show="isSaving" class="align-middle mr-1" small></b-spinner> Save</b-button>
+                                    <b-button class="ml-2" type="submit" variant="primary" :disabled="isSaving" v-if="!isReadOnly">
+                                        <b-spinner v-show="isSaving" class="align-middle mr-1" small></b-spinner>
+                                        Save
+                                    </b-button>
                                     <b-button class="ml-2" variant="danger" @click="goBack()" :disabled="isSaving">Back to List</b-button>
                                 </div>
                             </div>
@@ -74,6 +78,10 @@ export default {
             required: true,
             type: String
         },
+        isUserAuthenticated: {
+            required: true,
+            type: String
+        }
     },
     data() {
         return {
@@ -88,6 +96,9 @@ export default {
     computed: {
         isEditing() {
             return !!this.objectId;
+        },
+        isReadOnly() {
+            return !this.isUserAuthenticated;
         }
     },
     mounted() {
@@ -137,6 +148,10 @@ export default {
             })
         },
         goBack() {
+            if (this.isReadOnly) {
+                return location.replace(this.objectIndexRoute);
+            }
+
             this.$confirm(
                 {
                     message: `Are you sure you want to go back to the data list? All unsaved changes will be lost.`,

@@ -10,16 +10,16 @@
                         <div class="col-6">
                             <h3 class="mb-0">{{ objectTitle }}</h3>
                         </div>
-                        <div class="col-6 text-right">
-                            <h6 class="mb-0">
-                                <b-button
-                                    href="javascript:void(0)"
-                                    @click="addNewObject"
-                                    variant="primary"
-                                >
-                                    <i class="fa fa-plus"></i> Add New
-                                </b-button>
-                            </h6>
+                        <div class="col-6 clearfix">
+                            <b-button
+                                class="float-end"
+                                href="javascript:void(0)"
+                                @click="addNewObject"
+                                variant="primary"
+                                v-if="canAdd"
+                            >
+                                <i class="fa fa-plus"></i> Add New
+                            </b-button>
                         </div>
                     </div>
                 </template>
@@ -83,6 +83,10 @@ export default {
         objectEditFormRoute: {
             required: true,
             type: String
+        },
+        isUserAuthenticated: {
+            required: true,
+            type: String
         }
     },
     data() {
@@ -110,6 +114,11 @@ export default {
             ],
             tableItems: []
         };
+    },
+    computed: {
+        canAdd() {
+            return !!this.isUserAuthenticated;
+        }
     },
     mounted() {
         this.getAndDisplayTableData();

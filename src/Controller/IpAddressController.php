@@ -11,9 +11,12 @@ use App\Service\IpAddress\GetIpAddressTableDataServiceInterface;
 use App\Service\IpAddress\SaveIpAddressServiceInterface;
 use App\Utility\GenerateResponse;
 use Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Class IpAddressController
@@ -79,10 +82,13 @@ class IpAddressController extends CrudController
     /**
      * @param Request $request
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function addSubmit(Request $request): Response
     {
         try {
+            $this->checkUserAccess();
             $data = json_decode($request->getContent());
             $this->validate($data, true);
             // Save
@@ -92,7 +98,7 @@ class IpAddressController extends CrudController
                 ['data' => $data],
                 IpAddressControllerResponse::SAVE_NEW_SUCCESS
             );
-        } catch (InvalidFormErrorException $exception) {
+        } catch (AccessDeniedException | InvalidFormErrorException $exception) {
             $this->logger->error($exception->getMessage());
             return GenerateResponse::json(false, [], $exception->getMessage());
         } catch (Exception $exception) {
@@ -109,10 +115,13 @@ class IpAddressController extends CrudController
     /**
      * @param Request $request
      * @return Response
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function editSubmit(Request $request): Response
     {
         try {
+            $this->checkUserAccess();
             $data = json_decode($request->getContent());
             $this->validate($data, true);
             // Save
@@ -122,7 +131,7 @@ class IpAddressController extends CrudController
                 ['data' => $data],
                 IpAddressControllerResponse::UPDATE_SUCCESS
             );
-        } catch (InvalidFormErrorException $exception) {
+        } catch (AccessDeniedException | InvalidFormErrorException $exception) {
             $this->logger->error($exception->getMessage());
             return GenerateResponse::json(false, [], $exception->getMessage());
         } catch (Exception $exception) {

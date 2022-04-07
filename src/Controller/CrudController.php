@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
-use App\Exception\InvalidFormErrorException;
 use Exception;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Class CrudController
@@ -81,4 +83,21 @@ abstract class CrudController extends AbstractController
     protected function validate($data = [], bool $isNew = false)
     {
     }
+
+    /**
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    protected function checkUserAccess()
+    {
+        $securityContext = $this->container->get('security.authorization_checker');
+        if ($securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return true;
+        }
+
+        throw new AccessDeniedException();
+    }
+
+
 }
