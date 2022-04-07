@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Exception\InvalidFormErrorException;
 use App\Exception\IpAddressNotFoundException;
 use App\Response\IpAddressControllerResponse;
+use App\Service\IpAddress\CheckIfIpAddressExistServiceInterface;
 use App\Service\IpAddress\GetIpAddressFormDataService;
 use App\Service\IpAddress\GetIpAddressFormDataServiceInterface;
 use App\Service\IpAddress\GetIpAddressTableDataServiceInterface;
@@ -25,18 +26,21 @@ class IpAddressController extends CrudController
     protected SaveIpAddressServiceInterface $saveIpAddressService;
     protected GetIpAddressTableDataServiceInterface $getIpAddressTableDataService;
     protected GetIpAddressFormDataServiceInterface $getIpAddressFormDataService;
+    protected CheckIfIpAddressExistServiceInterface $checkIfIpAddressExistService;
 
     /**
      * @param LoggerInterface $logger
      * @param SaveIpAddressServiceInterface $saveIpAddressService
      * @param GetIpAddressTableDataServiceInterface $getIpAddressTableDataService
      * @param GetIpAddressFormDataServiceInterface $getIpAddressFormDataService
+     * @param CheckIfIpAddressExistServiceInterface $checkIfIpAddressExistService
      */
     public function __construct(
         LoggerInterface $logger,
         SaveIpAddressServiceInterface $saveIpAddressService,
         GetIpAddressTableDataServiceInterface $getIpAddressTableDataService,
-        GetIpAddressFormDataServiceInterface $getIpAddressFormDataService
+        GetIpAddressFormDataServiceInterface $getIpAddressFormDataService,
+        CheckIfIpAddressExistServiceInterface $checkIfIpAddressExistService
     ) {
         $this->pageTitle = 'IP Address';
         $this->indexTwigFile = 'ip_address/index.html.twig';
@@ -45,6 +49,7 @@ class IpAddressController extends CrudController
         $this->saveIpAddressService = $saveIpAddressService;
         $this->getIpAddressTableDataService = $getIpAddressTableDataService;
         $this->getIpAddressFormDataService = $getIpAddressFormDataService;
+        $this->checkIfIpAddressExistService = $checkIfIpAddressExistService;
     }
 
     /**
@@ -62,9 +67,10 @@ class IpAddressController extends CrudController
                 IpAddressControllerResponse::LIST_TABLE_DATA_FETCH_SUCCESS
             );
         } catch (Exception $exception) {
+            $this->logger->error($exception->getMessage());
             return GenerateResponse::json(
                 false,
-                ['data' => $data],
+                ['data' => []],
                 IpAddressControllerResponse::LIST_TABLE_DATA_FETCH_FAILED,
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
@@ -84,7 +90,7 @@ class IpAddressController extends CrudController
             $this->saveIpAddressService->execute($data);
             return GenerateResponse::json(
                 true,
-                $data,
+                ['data' => $data],
                 IpAddressControllerResponse::SAVE_NEW_SUCCESS
             );
         } catch (InvalidFormErrorException $exception) {
@@ -94,7 +100,7 @@ class IpAddressController extends CrudController
             $this->logger->error($exception->getMessage());
             return GenerateResponse::json(
                 false,
-                ['data' => $data],
+                ['data' => []],
                 IpAddressControllerResponse::SAVE_NEW_FAILED,
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
@@ -110,13 +116,11 @@ class IpAddressController extends CrudController
         try {
             $data = json_decode($request->getContent());
             $this->validate($data, true);
-            var_dump($data);
-            die();
-            // save
-
+            // Save
+            $this->saveIpAddressService->execute($data);
             return GenerateResponse::json(
                 true,
-                $data,
+                ['data' => $data],
                 IpAddressControllerResponse::UPDATE_SUCCESS
             );
         } catch (InvalidFormErrorException $exception) {
@@ -126,7 +130,7 @@ class IpAddressController extends CrudController
             $this->logger->error($exception->getMessage());
             return GenerateResponse::json(
                 false,
-                ['data' => $data],
+                ['data' => []],
                 IpAddressControllerResponse::UPDATE_FAILED,
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
@@ -165,11 +169,15 @@ class IpAddressController extends CrudController
     protected function validate($data = [], bool $isNew = false)
     {
         if (!isset($data->ipAddress)) {
-            throw new InvalidFormErrorException('IP address is required!');
+            throw new InvalidFormErrorException('IP address is required');
+        }
+
+        if ($this->checkIfIpAddressExistService->execute($data->id, $data->ipAddress)) {
+            throw new InvalidFormErrorException('IP address already exists');
         }
 
         if (!isset($data->label)) {
-            throw new InvalidFormErrorException('Label is required!');
+            throw new InvalidFormErrorException('Label is required');
         }
     }
 }
