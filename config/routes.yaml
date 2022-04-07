@@ -8,6 +8,6 @@ kernel:
 
 # IP Address routes
 ip_address_index:
-    path: /
+    path: /ip-addresses
     methods: [GET]
     controller: App\Controller\IpAddressController::index
