@@ -20,8 +20,8 @@ Download and install the following tools:
 5. Add the following:
    
    `<VirtualHost *:80>
-   DocumentRoot "C:/xampp/htdocs/ip-address-management-solution/public"
-   ServerName ip-address-management-solution.local
+      DocumentRoot "C:/xampp/htdocs/ip-address-management-solution/public"
+      ServerName ip-address-management-solution.local
    </VirtualHost>`
 
 6. Open and Run **Notepad** as administrator
