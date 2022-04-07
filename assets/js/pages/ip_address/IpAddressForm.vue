@@ -46,7 +46,7 @@
                             </div>
                             <div class="row mt-2">
                                 <div class="col-md-12 text-right">
-                                    <b-button class="ml-2" type="submit" variant="primary" :disabled="isSaving"><b-spinner v-show="isSaving" class="align-middle mr-1" small></b-spinner> Submit</b-button>
+                                    <b-button class="ml-2" type="submit" variant="primary" :disabled="isSaving"><b-spinner v-show="isSaving" class="align-middle mr-1" small></b-spinner> Save</b-button>
                                     <b-button class="ml-2" variant="danger" @click="goBack()" :disabled="isSaving">Back to List</b-button>
                                 </div>
                             </div>
