@@ -38,10 +38,7 @@ class IpAddressRepository extends ServiceEntityRepository
      */
     public function update(IpAddress $entity, bool $flush = true): void
     {
-        $this->_em->persist($entity);
-        if ($flush) {
-            $this->_em->flush();
-        }
+        $this->_em->flush();
     }
 
     /**

@@ -103,6 +103,7 @@ export default {
                 label: this.label
             };
 
+            // Update data
             if (this.objectId !== "" && this.objectId !== null) {
                 axios.put(`/ip-addresses/${this.objectId}`, data).then((response) => {
                     let responseData = response.data;
@@ -120,6 +121,7 @@ export default {
                 return;
             }
 
+            // Add data
             axios.post(`/ip-addresses`, data).then((response) => {
                 let responseData = response.data;
                 if (responseData.success) {

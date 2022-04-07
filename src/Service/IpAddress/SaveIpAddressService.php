@@ -36,16 +36,20 @@ class SaveIpAddressService implements SaveIpAddressServiceInterface
     public function execute($data)
     {
         $ipAddress = new IpAddress();
+
+        if ($data->id) {
+            // Get existing IP address object
+            $ipAddress = $this->ipAddressRepository->find($data->id);
+            if (!$ipAddress) {
+                throw new IpAddressNotFoundException();
+            }
+        }
+
         $ipAddress->setIpAddress($data->ipAddress);
         $ipAddress->setLabel($data->label);
         $ipAddress->setUserCreate($this->security->getUser());
 
         if ($data->id) {
-            $ipAddress = $this->ipAddressRepository->find($data->id);
-            if (!$ipAddress) {
-                throw new IpAddressNotFoundException();
-            }
-
             $ipAddress->setDateUpdate(new DateTime());
             $ipAddress->setUserCreate($this->security->getUser());
 
