@@ -6,6 +6,8 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 
+require('./assets/js/webpack/base');
+
 Encore
     // directory where compiled assets will be stored
     .setOutputPath('public/build/')
@@ -56,6 +58,10 @@ Encore
     .configureBabelPresetEnv((config) => {
         config.useBuiltIns = 'usage';
         config.corejs = 3;
+    })
+
+    .autoProvideVariables({
+        toastr: 'toastr'
     })
 
     .enableVueLoader()

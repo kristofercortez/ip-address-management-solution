@@ -46,7 +46,7 @@
                             <div class="row mt-2">
                                 <div class="col-md-12 text-right">
                                     <b-button class="ml-2" type="submit" variant="primary" :disabled="isSaving"><b-spinner v-show="isSaving" class="align-middle mr-1" small></b-spinner> Submit</b-button>
-                                    <b-button class="ml-2" variant="danger" @click="cancel()" :disabled="isSaving">Cancel</b-button>
+                                    <b-button class="ml-2" variant="danger" @click="goBack()" :disabled="isSaving">Back to List</b-button>
                                 </div>
                             </div>
                         </b-form>
@@ -99,35 +99,36 @@ export default {
 
             if (this.objectId !== "" && this.objectId !== null) {
                 axios.put(`/ip-addresses/${this.objectId}`, data).then((response) => {
-                    if (response.isSuccess) {
-                        // common.showToastSuccess('Success!', response.message);
+                    let responseData = response.data;
+                    if (responseData.success) {
+                        common.showToastSuccess('Success!', responseData.message);
                         setTimeout(() => {
                             window.location.reload();
                         }, 3000);
                         return;
                     }
 
-                    // common.showToastError('Error!', response.message);
+                    common.showToastError('Error!', responseData.message);
                     this.isSaving = false;
                 })
                 return;
             }
 
-            console.log('add submit');
             axios.post(`/ip-addresses`, data).then((response) => {
-                if (response.isSuccess) {
-                    // common.showToastSuccess('Success!', response.message);
+                let responseData = response.data;
+                if (responseData.success) {
+                    common.showToastSuccess('Success!', responseData.message);
                     setTimeout(() => {
                         window.location.replace(this.objectIndexRoute);
                     }, 3000);
                     return;
                 }
 
-                // common.showToastError('Error!', response.message);
+                common.showToastError('Error!', responseData.message);
                 this.isSaving = false;
             })
         },
-        cancel() {
+        goBack() {
             this.$confirm(
                 {
                     message: `Are you sure you want to go back to the data list? All unsaved changes will be lost.`,
@@ -163,7 +164,7 @@ export default {
                     this.isLoading = false;
                 }
             }, () => {
-                // common.showToastError('Error!', 'There was a problem in loading the data, please try again or contact support');
+                common.showToastError('Error!', 'There was a problem in loading the data, please try again or contact support');
                 setTimeout(() => {
                     window.location.replace(this.objectIndexRoute);
                 }, 3000);
