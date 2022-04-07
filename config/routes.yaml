@@ -19,10 +19,20 @@ ip_address_index_table_data:
 
 ip_address_add_form:
     path: /ip-addresses/add
-    methods: [ GET ]
+    methods: [GET]
     controller: App\Controller\IpAddressController::add
+
+ip_address_add_form_submit:
+    path: /ip-addresses
+    methods: [POST]
+    controller: App\Controller\IpAddressController::addSubmit
 
 ip_address_edit_form:
     path: /ip-addresses/{id}
-    methods: [ GET ]
+    methods: [GET]
     controller: App\Controller\IpAddressController::edit
+
+ip_address_edit_form_submit:
+    path: /ip-addresses/{id}
+    methods: [PUT]
+    controller: App\Controller\IpAddressController::editSubmit

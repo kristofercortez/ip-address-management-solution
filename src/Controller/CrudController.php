@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Exception\InvalidFormErrorException;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,5 +72,13 @@ abstract class CrudController extends AbstractController
             $this->addFlash('error', $exception->getMessage());
             return $this->redirectToRoute('ip_address_index');
         }
+    }
+
+    /**
+     * @param array $data
+     * @param bool $isNew
+     */
+    protected function validate($data = [], bool $isNew = false)
+    {
     }
 }

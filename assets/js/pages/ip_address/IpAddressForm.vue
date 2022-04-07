@@ -60,6 +60,8 @@
 
 <script>
 
+import axios from "axios";
+
 export default {
     props: {
         objectId: {
@@ -91,43 +93,39 @@ export default {
         saveData() {
             let data = {
                 id: this.objectId,
-                name: this.name
+                ipAddress: this.ipAddress,
+                label: this.label
             };
 
             if (this.objectId !== "" && this.objectId !== null) {
-                // apiUpdateObject(this.objectId, data, (response) => {
-                //     if (response.isSuccess) {
-                //         common.showToastSuccess('Success!', `IP Address ${this.name} has been updated`);
-                //         setTimeout(() => {
-                //             window.location.reload();
-                //         }, 3000);
-                //         return;
-                //     }
-                //
-                //     common.showToastError('Error!', response.message);
-                //     this.isSaving = false;
-                // }, () => {
-                //     common.showToastError('Error!', 'There was a problem in updating the object, please try again or contact support');
-                //     this.isSaving = false
-                // });
-                // return;
+                axios.put(`/ip-addresses/${this.objectId}`, data).then((response) => {
+                    if (response.isSuccess) {
+                        // common.showToastSuccess('Success!', response.message);
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 3000);
+                        return;
+                    }
+
+                    // common.showToastError('Error!', response.message);
+                    this.isSaving = false;
+                })
+                return;
             }
 
-            // apiAddNewObject(data, (response) => {
-            //     if (response.isSuccess) {
-            //         common.showToastSuccess('Success!', `IP Address ${this.name} has been saved`);
-            //         setTimeout(() => {
-            //             window.location.replace(this.objectIndexRoute);
-            //         }, 3000);
-            //         return;
-            //     }
-            //
-            //     common.showToastError('Error!', response.message);
-            //     this.isSaving = false;
-            // }, () => {
-            //     common.showToastError('Error!', 'There was a problem in saving the data, please try again or contact support');
-            //     this.isSaving = false
-            // });
+            console.log('add submit');
+            axios.post(`/ip-addresses`, data).then((response) => {
+                if (response.isSuccess) {
+                    // common.showToastSuccess('Success!', response.message);
+                    setTimeout(() => {
+                        window.location.replace(this.objectIndexRoute);
+                    }, 3000);
+                    return;
+                }
+
+                // common.showToastError('Error!', response.message);
+                this.isSaving = false;
+            })
         },
         cancel() {
             this.$confirm(
@@ -165,7 +163,7 @@ export default {
                     this.isLoading = false;
                 }
             }, () => {
-                common.showToastError('Error!', 'There was a problem in loading the data, please try again or contact support');
+                // common.showToastError('Error!', 'There was a problem in loading the data, please try again or contact support');
                 setTimeout(() => {
                     window.location.replace(this.objectIndexRoute);
                 }, 3000);

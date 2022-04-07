@@ -22,8 +22,8 @@ class IpAddressRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @param IpAddress $entity
+     * @param bool $flush
      */
     public function add(IpAddress $entity, bool $flush = true): void
     {
@@ -34,12 +34,12 @@ class IpAddressRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws ORMException
-     * @throws OptimisticLockException
+     * @param IpAddress $entity
+     * @param bool $flush
      */
-    public function remove(IpAddress $entity, bool $flush = true): void
+    public function update(IpAddress $entity, bool $flush = true): void
     {
-        $this->_em->remove($entity);
+        $this->_em->persist($entity);
         if ($flush) {
             $this->_em->flush();
         }
