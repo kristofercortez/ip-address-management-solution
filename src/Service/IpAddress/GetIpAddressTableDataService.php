@@ -7,8 +7,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
- * Class GetPositionTableDataService
- * @package App\Service\User
+ * Class GetIpAddressTableDataService
+ * @package App\Service\IpAddress
  */
 class GetIpAddressTableDataService implements GetIpAddressTableDataServiceInterface
 {

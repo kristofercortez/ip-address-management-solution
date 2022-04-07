@@ -36,3 +36,8 @@ ip_address_edit_form_submit:
     path: /ip-addresses/{id}
     methods: [PUT]
     controller: App\Controller\IpAddressController::editSubmit
+
+ip_address_edit_form_data:
+    path: /ip-addresses/form/{id}
+    methods: [GET]
+    controller: App\Controller\IpAddressController::getFormData

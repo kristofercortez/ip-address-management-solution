@@ -8,8 +8,8 @@
                 >
                     <template #header>
                         <div class="row align-items-center">
-                            <div class="col-6">
-                                <h2 class="mb-0">{{ headerText }}</h2>
+                            <div class="col-12">
+                                <h3 class="mb-0">{{ headerText }}</h3>
                             </div>
                         </div>
                     </template>
@@ -24,6 +24,7 @@
                                                 v-model="ipAddress"
                                                 :state="getValidationState(validationContext)"
                                                 aria-describedby="ip-address-input-feedback"
+                                                :readonly="isEditing"
                                             ></b-form-input>
                                             <b-form-invalid-feedback id="ip-address-input-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
                                         </b-form-group>
@@ -83,6 +84,11 @@ export default {
             headerText: 'Add a new IP Address',
             toastCount: 0
         };
+    },
+    computed: {
+        isEditing() {
+            return !!this.objectId;
+        }
     },
     mounted() {
         if (this.objectId) {
@@ -157,18 +163,22 @@ export default {
         },
         async loadObjectData() {
             this.isLoading = true;
-            await apiGetObjectFormData(this.objectId, (response) => {
-                if (response.isSuccess) {
-                    this.name = response.responseData.data['name'];
-                    this.headerText = `IP Address information for ${this.name}`;
+
+            axios.get(`/ip-addresses/form/${this.objectId}`).then((response) => {
+                let responseData = response.data;
+                if (responseData.success) {
+                    this.ipAddress = response.data.data.ipAddress;
+                    this.label = response.data.data.label;
+                    this.headerText = `IP Address information for ${this.ipAddress}`;
                     this.isLoading = false;
+                    return;
                 }
-            }, () => {
-                common.showToastError('Error!', 'There was a problem in loading the data, please try again or contact support');
+
+                common.showToastError('Error!', responseData.message);
                 setTimeout(() => {
                     window.location.replace(this.objectIndexRoute);
                 }, 3000);
-            });
+            })
         }
     },
 };

@@ -8,7 +8,7 @@
                 <template #header>
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <h2 class="mb-0">{{ objectTitle }}</h2>
+                            <h3 class="mb-0">{{ objectTitle }}</h3>
                         </div>
                         <div class="col-6 text-right">
                             <h6 class="mb-0">

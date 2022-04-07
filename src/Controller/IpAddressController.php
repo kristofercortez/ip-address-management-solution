@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Exception\InvalidFormErrorException;
+use App\Exception\IpAddressNotFoundException;
 use App\Response\IpAddressControllerResponse;
+use App\Service\IpAddress\GetIpAddressFormDataService;
+use App\Service\IpAddress\GetIpAddressFormDataServiceInterface;
 use App\Service\IpAddress\GetIpAddressTableDataServiceInterface;
 use App\Service\IpAddress\SaveIpAddressServiceInterface;
 use App\Utility\GenerateResponse;
@@ -21,16 +24,19 @@ class IpAddressController extends CrudController
     protected LoggerInterface $logger;
     protected SaveIpAddressServiceInterface $saveIpAddressService;
     protected GetIpAddressTableDataServiceInterface $getIpAddressTableDataService;
+    protected GetIpAddressFormDataServiceInterface $getIpAddressFormDataService;
 
     /**
      * @param LoggerInterface $logger
      * @param SaveIpAddressServiceInterface $saveIpAddressService
      * @param GetIpAddressTableDataServiceInterface $getIpAddressTableDataService
+     * @param GetIpAddressFormDataServiceInterface $getIpAddressFormDataService
      */
     public function __construct(
         LoggerInterface $logger,
         SaveIpAddressServiceInterface $saveIpAddressService,
-        GetIpAddressTableDataServiceInterface $getIpAddressTableDataService
+        GetIpAddressTableDataServiceInterface $getIpAddressTableDataService,
+        GetIpAddressFormDataServiceInterface $getIpAddressFormDataService
     ) {
         $this->pageTitle = 'IP Address';
         $this->indexTwigFile = 'ip_address/index.html.twig';
@@ -38,8 +44,14 @@ class IpAddressController extends CrudController
         $this->logger = $logger;
         $this->saveIpAddressService = $saveIpAddressService;
         $this->getIpAddressTableDataService = $getIpAddressTableDataService;
+        $this->getIpAddressFormDataService = $getIpAddressFormDataService;
     }
 
+    /**
+     * @param int $startPage
+     * @param int $limit
+     * @return Response
+     */
     public function getIpAddressTableData(int $startPage, int $limit): Response
     {
         try {
@@ -52,7 +64,7 @@ class IpAddressController extends CrudController
         } catch (Exception $exception) {
             return GenerateResponse::json(
                 false,
-                [],
+                ['data' => $data],
                 IpAddressControllerResponse::LIST_TABLE_DATA_FETCH_FAILED,
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
@@ -72,7 +84,7 @@ class IpAddressController extends CrudController
             $this->saveIpAddressService->execute($data);
             return GenerateResponse::json(
                 true,
-                ['data' => $data],
+                $data,
                 IpAddressControllerResponse::SAVE_NEW_SUCCESS
             );
         } catch (InvalidFormErrorException $exception) {
@@ -82,7 +94,7 @@ class IpAddressController extends CrudController
             $this->logger->error($exception->getMessage());
             return GenerateResponse::json(
                 false,
-                [],
+                ['data' => $data],
                 IpAddressControllerResponse::SAVE_NEW_FAILED,
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
@@ -114,8 +126,32 @@ class IpAddressController extends CrudController
             $this->logger->error($exception->getMessage());
             return GenerateResponse::json(
                 false,
-                [],
+                ['data' => $data],
                 IpAddressControllerResponse::UPDATE_FAILED,
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    /**
+     * @param $id
+     * @return Response
+     */
+    public function getFormData($id): Response
+    {
+        try {
+            $data = $this->getIpAddressFormDataService->execute($id);
+            return GenerateResponse::json(
+                true,
+                $data,
+                IpAddressControllerResponse::FORM_DATA_FETCH_SUCCESS
+            );
+        } catch (IpAddressNotFoundException | Exception $exception) {
+            $this->logger->error($exception->getMessage());
+            return GenerateResponse::json(
+                false,
+                ['data' => []],
+                IpAddressControllerResponse::FORM_DATA_FETCH_FAILED,
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
         }
