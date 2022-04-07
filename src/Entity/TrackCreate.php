@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Utility\DatetimeUtility;
 use DateTime;
 
 /**
@@ -61,5 +62,14 @@ trait TrackCreate
     {
         $this->user_create = $userCreate;
         return $this;
+    }
+
+    /**
+     * @param $data
+     */
+    protected function dataTrackCreate($data)
+    {
+        $data->date_create = $this->date_create->format(DatetimeUtility::DATETIME_DB_FORMAT);
+        $data->user_create = $this->user_create?->getId();
     }
 }

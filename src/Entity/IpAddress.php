@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\IpAddressRepository;
 use Doctrine\ORM\Mapping as ORM;
+use stdClass;
 
 /**
  * @ORM\Entity
@@ -66,5 +67,19 @@ class IpAddress
     {
         $this->label = $label;
         return $this;
+    }
+
+    /**
+     * @return stdClass
+     */
+    public function toData()
+    {
+        $data = new stdClass();
+        $this->dataGeneratedID($data);
+        $this->dataTrackCreate($data);
+        $this->dataTrackUpdate($data);
+        $data->ip_address = $this->ip_address;
+        $data->label = $this->label;
+        return $data;
     }
 }

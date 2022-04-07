@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Utility\DatetimeUtility;
 use DateTime;
 
 /**
@@ -61,5 +62,14 @@ trait TrackUpdate
     {
         $this->user_update = $userUpdate;
         return $this;
+    }
+
+    /**
+     * @param $data
+     */
+    protected function dataTrackUpdate($data)
+    {
+        $data->date_update = $this->date_update->format(DatetimeUtility::DATETIME_DB_FORMAT);
+        $data->user_update = $this->user_update?->getId();
     }
 }
