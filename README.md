@@ -24,10 +24,10 @@ Download and install the following tools:
 4. Go to C:\xampp\apache\conf\extra\ and open **httpd-vhosts.conf**
 5. Add the following:
    
-   `<VirtualHost *:80>`
-         `DocumentRoot "C:/xampp/htdocs/ip-address-management-solution/public"`
-         `ServerName ip-address-management-solution.local`
-   `</VirtualHost>`
+   `<VirtualHost *:80>
+      DocumentRoot "C:/xampp/htdocs/ip-address-management-solution/public"
+      ServerName ip-address-management-solution.local
+   </VirtualHost>`
 
 6. Open and Run **Notepad** as administrator
 7. Click **file** and **open**
