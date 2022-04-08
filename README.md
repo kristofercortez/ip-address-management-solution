@@ -17,6 +17,9 @@ Download and install the following tools:
 1. Run **Xampp** and start **Apache** and **MySQL**
 2. Go to C:\xampp\htdocs and open git bash or any git emulator
 3. Clone the project from 'https://github.com/kristofercortez/ip-address-management-solution.git' and checkout **master** branch
+
+   `git clone https://github.com/kristofercortez/ip-address-management-solution.git`
+
 4. Go to C:\xampp\apache\conf\extra\ and open **httpd-vhosts.conf**
 5. Add the following:
    
