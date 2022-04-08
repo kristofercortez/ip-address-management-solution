@@ -35,11 +35,12 @@ Download and install the following tools:
 11. Open git bash to repo directory
 12. Run **composer install**
 13. Run **yarn install**
-14. Run the following to create database and tables.
+14. Run **yarn dev**
+15. Run the following to create database and tables.
     - Run **php bin/console doctrine:database:create**
     - Run **php bin/console doctrine:migrations:migrate**
-15. To generate a user. Run **php bin/console doctrine:fixtures:load**
+16. To generate a user. Run **php bin/console doctrine:fixtures:load**
     - username: admin, password: admin
-16. You can now access the site
+17. You can now access the site
     - App http://ip-address-management-solution.local/
     - DB http://localhost/phpmyadmin/ 
