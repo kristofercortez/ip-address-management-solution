@@ -8,6 +8,7 @@ Download and install the following tools:
 
 - **Xampp** from https://www.apachefriends.org/xampp-files/8.1.4/xampp-windows-x64-8.1.4-1-VS16-installer.exe
 - **Composer** from https://getcomposer.org/Composer-Setup.exe
+- **Git** from https://github.com/git-for-windows/git/releases/download/v2.35.1.windows.2/Git-2.35.1.2-64-bit.exe
 
 ---
 
