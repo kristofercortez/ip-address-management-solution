@@ -16,8 +16,8 @@ Download and install the following tools:
 ## Clone and Setup
 
 1. Run **Xampp** and start **Apache** and **MySQL**
-2. Open git bash or any git emulator then go to C:\xampp\htdocs by running cd **/c/xampp/htdocs/**
-3. Clone the project from 'https://github.com/kristofercortez/ip-address-management-solution.git' and checkout **master** branch
+2. Open git bash or any git emulator then go to C:\xampp\htdocs by running **cd /c/xampp/htdocs/**
+3. Run the following command to clone the project from 'https://github.com/kristofercortez/ip-address-management-solution.git'
 
    `git clone https://github.com/kristofercortez/ip-address-management-solution.git`
 
