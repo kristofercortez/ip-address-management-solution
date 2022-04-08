@@ -6,7 +6,7 @@
 
 Download and install the following tools:
 
-- **Xampp** from https://www.apachefriends.org/xampp-files/8.1.4/xampp-osx-8.1.4-1-installer.dmg
+- **Xampp** from https://www.apachefriends.org/xampp-files/8.1.4/xampp-windows-x64-8.1.4-1-VS16-installer.exe
 - **Composer** from https://getcomposer.org/Composer-Setup.exe
 
 ---
