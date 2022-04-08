@@ -25,8 +25,11 @@ Download and install the following tools:
 5. Add the following:
    
    `<VirtualHost *:80>
+
       DocumentRoot "C:/xampp/htdocs/ip-address-management-solution/public"
+
       ServerName ip-address-management-solution.local
+
    </VirtualHost>`
 
 6. Open and Run **Notepad** as administrator
@@ -49,6 +52,6 @@ Download and install the following tools:
 17. You can now access the site
     - App http://ip-address-management-solution.local/
 
-    `Username: **admin**, Password: **admin**`
+      `Username: admin, Password: admin`
 
     - DB http://localhost/phpmyadmin/ 
