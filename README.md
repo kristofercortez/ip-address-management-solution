@@ -48,5 +48,7 @@ Download and install the following tools:
 16. To generate a user, run **php bin/console doctrine:fixtures:load**
 17. You can now access the site
     - App http://ip-address-management-solution.local/
+
     `Username: **admin**, Password: **admin**`
+
     - DB http://localhost/phpmyadmin/ 
