@@ -30,14 +30,14 @@ Download and install the following tools:
    </VirtualHost>`
 
 6. Open and Run **Notepad** as administrator
-7. Click file and open
-8. Locate and open your local hosts file from C:\Windows\System32\drivers\etc
+7. Click **file** and **open**
+8. Locate and open your local **hosts** file from **C:\Windows\System32\drivers\etc** (On the lower right corner, change file type to **All file**)
 9. Add the following:
 
    `127.0.0.1		ip-address-management-solution.local`
 
-10. Restart Xampp **apache server**
-11. Open git bash to app repository directory
+10. Restart(stop and start) Xampp **apache server**
+11. Open git bash to cloned repository directory
 12. Run the following command:
     - **composer install**
     - **yarn install**
@@ -45,8 +45,8 @@ Download and install the following tools:
 15. Run the following to create database and tables.
     - **php bin/console doctrine:database:create**
     - **php bin/console doctrine:migrations:migrate**
-16. To generate a user. Run **php bin/console doctrine:fixtures:load**
-    - username: admin, password: admin
+16. To generate a user, run **php bin/console doctrine:fixtures:load**
 17. You can now access the site
     - App http://ip-address-management-solution.local/
     - DB http://localhost/phpmyadmin/ 
+    - Username: **admin**, Password: **admin**
