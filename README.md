@@ -16,7 +16,7 @@ Download and install the following tools:
 ## Clone and Setup
 
 1. Run **Xampp** and start **Apache** and **MySQL**
-2. Go to C:\xampp\htdocs and open git bash or any git emulator
+2. Open git bash or any git emulator then go to C:\xampp\htdocs by running cd **/c/xampp/htdocs/**
 3. Clone the project from 'https://github.com/kristofercortez/ip-address-management-solution.git' and checkout **master** branch
 
    `git clone https://github.com/kristofercortez/ip-address-management-solution.git`
@@ -37,13 +37,14 @@ Download and install the following tools:
    `127.0.0.1		ip-address-management-solution.local`
 
 10. Restart Xampp **apache server**
-11. Open git bash to repo directory
-12. Run **composer install**
-13. Run **yarn install**
-14. Run **yarn dev**
+11. Open git bash to app repository directory
+12. Run the following command:
+    - **composer install**
+    - **yarn install**
+    - **yarn dev**
 15. Run the following to create database and tables.
-    - Run **php bin/console doctrine:database:create**
-    - Run **php bin/console doctrine:migrations:migrate**
+    - **php bin/console doctrine:database:create**
+    - **php bin/console doctrine:migrations:migrate**
 16. To generate a user. Run **php bin/console doctrine:fixtures:load**
     - username: admin, password: admin
 17. You can now access the site
